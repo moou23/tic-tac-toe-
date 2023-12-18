@@ -1,6 +1,6 @@
 #include "../include/game.h"
 
 int main(){
-    ticTacToe();
+    tic_tac_toe();
     return 0;
 }
