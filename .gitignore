@@ -1,0 +1,4 @@
+# Excluded build files
+obj/main.o
+obj/game.o
+bin/tic_tac_toe

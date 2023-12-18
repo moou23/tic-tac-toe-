@@ -74,7 +74,6 @@ void displayWinner(bool player) {
 void output(int ch, bool player) {
   char out = (player) ? 'X' : 'O';
   int x = 49;
-  int i = 0;
   int k = 0;
   int l = 0;
   k = (ch - x);
@@ -90,7 +89,7 @@ void output(int ch, bool player) {
   refresh();
 }
 
-void ticTacToe() {
+void tic_tac_toe() {
   // Initialize variables
   int x = 48;
   bool endGame = false;

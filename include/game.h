@@ -10,5 +10,6 @@ bool checkWin(char input[]);
 void drawBoard();
 void displayWinner(bool player);
 void output(int ch, bool player);
+void tic_tac_toe();
 
 #endif
