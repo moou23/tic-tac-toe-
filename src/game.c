@@ -1,7 +1,166 @@
 #include <curses.h>
+#include <locale.h>
+#include <ncurses.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+void drawBoard();
+bool checkWin(char input[]);
+void displayWinner(bool player);
+void output(int ch, bool player);
+void rahmen(char input[], int x, bool auswahl);
+void quit();
+void onevsone();
+void menu();
 
+void vorschau()
+{
+    initscr();
+     keypad(stdscr, TRUE);
+     mousemask(ALL_MOUSE_EVENTS, NULL);
+mvprintw(0,30," _______ _          _______             _______         ");
+mvprintw(1,30," |__   __(_)        |__   __|           |__   __|        ");
+mvprintw(2,30,"    | |   _  ___ ______| | __ _  ___ ______| | ___   ___ ");
+mvprintw(3,30,"    | |  | |/ __|______| |/ _` |/ __|______| |/ _ \\ / _ \\");
+mvprintw(4,30,"    | |  | | (__       | | (_| | (__       | | (_) |  __/");
+mvprintw(5,30,"    |_|  |_|\\___|      |_|\\__,_|\\___|      |_|\\___/ \\___|");
+mvprintw(10,30,"Click LeftClick to get to the menu!");
+while(true)
+{  
+  MEVENT event;
+int ch = getch();
+if (ch == KEY_MOUSE) {
+      if (getmouse(&event) == OK)
+      {
+        if(event.bstate & BUTTON1_CLICKED)
+        {
+        menu();
+        break;
+        }
+      }
+}
+else {
+        mvprintw(11,30,"ONLY LEFTCLICK");
+        }
+}
+}
+void menu() {
+  clear();
+  bool menu;
+  MEVENT event; // detects mouse events
+  int ch;
+  int switc = 0;
+  char oneoone[] = "1 vs 1";
+  char oneocomputer[] = "1 vs computer";
+  char bestenliste[] = "Bestenliste";
+  char exit[] = "Exit";
+  bool auswahl = false;
+  start_color();
+  init_pair(2, COLOR_BLACK, COLOR_WHITE); //initializes a color pair
+  mvprintw(0, 40, "MENU");
+  mvprintw(2, 40, "%s", oneoone);
+  rahmen(oneoone, 2, auswahl);
+  mvprintw(4, 40, "%s", oneocomputer);
+  rahmen(oneocomputer, 4, auswahl);
+  mvprintw(6, 40, "%s", bestenliste);
+  rahmen(bestenliste, 6, auswahl);
+  mvprintw(8, 40, "%s", exit);
+  rahmen(exit, 8, auswahl);
+  noecho(); // deactivates the output of the input
+  nodelay(stdscr, TRUE); // Make getch non-blocking
+  mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL); // registers the mouse position
+  printf("\033[?1003h\n"); // enables mouse movement detection
+
+  while (true) {
+    ch = getch();
+    if (ch == KEY_MOUSE) {
+      if (getmouse(&event) == OK) { // checks if the mouse interaction is registered 
+        if (REPORT_MOUSE_POSITION) {
+          if ((event.y == 2 || event.y == 1) &&
+              (event.x >= 40 && event.y <= 45)) {
+            rahmen(oneoone, 2, true);
+            switc = 1;
+            if (event.bstate & BUTTON1_DOUBLE_CLICKED) {
+              nodelay(stdscr, false);
+              mousemask(0, NULL);
+              clear();
+              onevsone();
+            }
+          } else {
+            if (switc == 1) {
+              rahmen(oneoone, 2, false);
+              switc = 0;
+            }
+          }
+          if ((event.y == 4 || event.y == 3) &&
+              (event.x >= 40 && event.y <= 52)) {
+            rahmen(oneocomputer, 4, true);
+            switc = 2;
+            if (event.bstate & BUTTON1_DOUBLE_CLICKED) {
+              clear();
+              mvprintw(4, 40, "Under construction");
+            }
+          } else {
+            if (switc == 2) {
+              rahmen(oneoone, 2, false);
+              switc = 0;
+            }
+            rahmen(oneocomputer, 4, false);
+          }
+          if ((event.y == 6 || event.y == 5) &&
+              (event.x >= 40 && event.y <= 50)) {
+            switc = 3;
+            rahmen(bestenliste, 6, true);
+            if (event.bstate & BUTTON1_DOUBLE_CLICKED) {
+              clear();
+              mvprintw(4, 40, "Under construction");
+            }
+          } else {
+            if (switc == 3) {
+              rahmen(oneoone, 2, false);
+              switc = 0;
+            }
+            rahmen(bestenliste, 6, false);
+          }
+          if ((event.y == 8 || event.y == 7) &&
+              (event.x >= 40 && event.y <= 43)) {
+            switc = 4;
+            rahmen(exit, 8, true);
+            if (event.bstate & BUTTON1_DOUBLE_CLICKED) {
+              nodelay(stdscr, false);
+              mousemask(0, NULL);
+              clear();
+              mvprintw(4, 40, "Thanks for playing!");
+              quit();
+            }
+
+          } else {
+            if (switc == 4) {
+              rahmen(oneoone, 2, false);
+              switc = 0;
+            }
+            rahmen(exit, 8, false);
+          }
+        }
+      }
+    }
+  }
+}
+
+void rahmen(char input[], int x, bool auswahl) {
+  int length = strlen(input);
+  if (auswahl == true) {
+    start_color();
+    init_pair(1, COLOR_GREEN, PAIR_NUMBER(2));
+    attron(COLOR_PAIR(1));
+  }
+  for (int i = 0; i < length; i++) {
+    mvprintw(x - 1, i + 40, "_");
+  }
+  refresh();
+  attroff(COLOR_PAIR(1));
+}
 // Function to perform cleanup and exit
 void quit() { endwin(); }
 
@@ -67,7 +226,6 @@ void drawBoard() {
 void displayWinner(bool player) {
   mvprintw(10, 0, "The winner of the game is the player: %c",
            (player ? 'X' : 'O'));
-  mvprintw(10, 44, "%c", (player ? 'X' : 'O'));
 }
 
 // Function to update the game output
@@ -89,7 +247,7 @@ void output(int ch, bool player) {
   refresh();
 }
 
-void tic_tac_toe() {
+void onevsone() {
   // Initialize variables
   int x = 48;
   bool endGame = false;
@@ -99,7 +257,7 @@ void tic_tac_toe() {
   // Main game loop
   while (!endGame) {
     initscr();
-    mvprintw(5, 50, "Highscore: X = %d Y = %d", xWinCount, oWinCount);
+    mvprintw(5, 50, "The point count is: X = %d Y = %d", xWinCount, oWinCount);
 
     // Initialize game state
     char input[9] = {'\0'};
@@ -119,6 +277,7 @@ void tic_tac_toe() {
       while (ch < 49 || ch > 57 || input[ch - x - 1] != '\0') {
         mvprintw(10, 0, "Invalid input. Enter a number between 1 and 9:");
         ch = getch();
+        mvhline(10,0,' ',COLS); 
       }
 
       // Update the game state
@@ -136,6 +295,7 @@ void tic_tac_toe() {
         }
         break;
       } else if (i == 8 && !checkWin(input)) {
+        mvhline(10,0,' ',COLS); 
         mvprintw(10, 0, "It's a draw :(");
       }
 
@@ -148,11 +308,9 @@ void tic_tac_toe() {
     // Ask user if they want to play again
     mvprintw(0, 10, "End? Press 1 for yes, 0 for another game:");
     if (getch() == 49) {
-      endGame = true;
+      menu();
     }
-
     clear();
   }
-
-  quit();
 }
+int main() { vorschau(); }
