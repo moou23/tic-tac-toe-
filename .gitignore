@@ -1,4 +1,8 @@
-# Excluded build files
+# .gitignore file for excluding build files
+
+# Exclude object files in the 'obj' directory
 obj/main.o
 obj/game.o
+
+# Exclude the executable file in the 'bin' directory
 bin/tic_tac_toe
