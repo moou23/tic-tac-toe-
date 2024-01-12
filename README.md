@@ -10,4 +10,4 @@ Upon running `make`, the `bin/` and `obj/` directories will be created. The `bin
 ## Usage
 Upon launching the program, you will encounter a title screen. Progress further by left-clicking.
 
-Next, you will encounter the menu, offering two game modes: 1vs1 and 1 vs computer. Additionally, there is a "Tips and Tricks" page for guidance.
+Next, you will encounter the menu, offering two game modes: 1vs1 and 1 vs computer. Additionally, there is a "Tips and Tricks" page for guidance. To exit "Tips and Tricks" press enter.
