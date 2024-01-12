@@ -11,7 +11,7 @@
 #include <stdbool.h>
 
 // Function declarations
-void scoreboard();
+void tipps_n_tricks();
 void draw_board();
 bool check_win(char input[]);
 void display_winner(bool player);
