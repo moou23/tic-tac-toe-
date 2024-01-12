@@ -141,23 +141,22 @@ void disable() {
 
 // Function for tipps and tricks
 void tipps_n_tricks() {
-  // Tipps für Tic-Tac-Toe anzeigen
   mvprintw(1, 1, "Coole Tic-Tac-Toe Tipps");
   mvprintw(3, 1,
-           "1. Beginne in der Mitte: Das gibt dir die meisten Möglichkeiten.");
+           "1. Beginne in der Mitte: Das gibt dir die meisten Moeglichkeiten.");
   mvprintw(4, 1,
-           "2. Ecke als nächstes: Wenn die Mitte belegt ist, wähle eine Ecke.");
+           "2. Ecke als naechstes: Wenn die Mitte belegt ist, waehle eine Ecke.");
   mvprintw(
       5, 1,
       "3. Blockiere Gegner: Halte Ausschau und blockiere gegnerische Linien.");
   mvprintw(6, 1,
-           "4. Zwei Wege zum Sieg: Versuche, zwei Gewinnmöglichkeiten "
+           "4. Zwei Wege zum Sieg: Versuche, zwei Gewinnmoeglichkeiten "
            "gleichzeitig zu haben.");
   mvprintw(7, 1,
            "5. Achte auf Fallen: Pass auf, dass du deinem Gegner nicht den "
-           "Sieg ermöglichst.");
+           "Sieg ermoeglichst.");
 
-  // Warten auf eine Eingabe
+  // Wait for Input
   getch();
   menu();
 }
