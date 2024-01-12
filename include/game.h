@@ -25,5 +25,7 @@ void disable();
 void tic_tac_toe();
 int get_larger(int num1, int num2);
 int get_smaller(int num1, int num2);
+void speichern_bestenliste(char spieler, int gewonneneSpiele);
+void frage_bestenliste_speichern(char gewinner, int xWinCount, int oWinCount);
 
 #endif
