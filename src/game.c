@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 // Start function
 void tic_tac_toe() {
@@ -514,7 +513,6 @@ void one_vs_one() {
         } else {
           oWinCount++;
         }
-        frage_bestenliste_speichern(currentPlayer, xWinCount, oWinCount);
         break;
       } else if (i == 8 && !check_win(input)) {
         // In case of a draw
@@ -535,39 +533,4 @@ void one_vs_one() {
     }
     clear();
   }
-}
-
-void speichern_bestenliste(char spieler, int gewonneneSpiele) {
-  FILE *datei = fopen("bestenliste.txt", "a");
-  time_t jetzt;
-  struct tm *lokaleZeit;
-
-  // Aktuelles Datum ermitteln
-  time(&jetzt);
-  lokaleZeit = localtime(&jetzt);
-
-  if (datei != NULL) {
-    fprintf(datei, "Spieler %c hat %d Spiele gewonnen - Datum: %02d-%02d-%d\n",
-            spieler, gewonneneSpiele, lokaleZeit->tm_mday,
-            lokaleZeit->tm_mon + 1, lokaleZeit->tm_year + 1900);
-    fclose(datei);
-  } else {
-    mvprintw(22, 40, "Fehler beim Speichern in der Bestenliste!");
-  }
-}
-
-void frage_bestenliste_speichern(char gewinner, int xWinCount, int oWinCount) {
-    char antwort;
-    mvprintw(20, 40, "Möchte Spieler %c seinen Sieg speichern? (j/n): ", gewinner);
-    echo();
-    antwort = getch();
-    noecho();
-
-    if (antwort == 'j' || antwort == 'J') {
-        if (gewinner == 'X') {
-            speichern_bestenliste('X', xWinCount);
-        } else if (gewinner == 'O') {
-            speichern_bestenliste('O', oWinCount);
-        }
-    }
 }
