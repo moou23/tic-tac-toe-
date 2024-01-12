@@ -48,7 +48,7 @@ void menu() {
   int ch;
   char oneoone[] = "1 vs 1";
   char oneocomputer[] = "1 vs computer";
-  char bestenliste[] = "Bestenliste";
+  char bestenliste[] = "Tipps & Tricks";
   char exit[] = "Exit";
   bool selection = false;
 
@@ -109,7 +109,7 @@ void menu() {
             frame(bestenliste, 6, true);
             if (event.bstate & BUTTON1_DOUBLE_CLICKED) {
               disable();
-              scoreboard();
+              tipps_n_tricks();
             }
           } else {
             frame(bestenliste, 6, false);
@@ -139,66 +139,27 @@ void disable() {
   clear();
 }
 
-// Function for displaying the scoreboard
-void scoreboard() {
-  int anzahl = 9;
-  int position = 0;
+// Function for tipps and tricks
+void tipps_n_tricks() {
+  // Tipps für Tic-Tac-Toe anzeigen
+  mvprintw(1, 1, "Coole Tic-Tac-Toe Tipps");
+  mvprintw(3, 1,
+           "1. Beginne in der Mitte: Das gibt dir die meisten Möglichkeiten.");
+  mvprintw(4, 1,
+           "2. Ecke als nächstes: Wenn die Mitte belegt ist, wähle eine Ecke.");
+  mvprintw(
+      5, 1,
+      "3. Blockiere Gegner: Halte Ausschau und blockiere gegnerische Linien.");
+  mvprintw(6, 1,
+           "4. Zwei Wege zum Sieg: Versuche, zwei Gewinnmöglichkeiten "
+           "gleichzeitig zu haben.");
+  mvprintw(7, 1,
+           "5. Achte auf Fallen: Pass auf, dass du deinem Gegner nicht den "
+           "Sieg ermöglichst.");
 
-  // Headings for the scoreboard
-  mvprintw(0, 40, "Scoreboard");
-  mvprintw(2, 5, "Rank");
-  mvprintw(2, 20, "Name");
-  mvprintw(2, 33, "Wins");
-  mvprintw(2, 42, "Draws");
-  mvprintw(2, 58, "Losses");
-  mvprintw(2, 70, "Date");
-
-  // Loop for displaying the scoreboard
-  for (int i = 0; i < 7; i++) {
-    switch (i) {
-    case 1:
-      position = 15;
-      break;
-    case 2:
-      position = 28;
-      break;
-    case 3:
-      position = 37;
-      break;
-    case 4:
-      position = 53;
-      break;
-    case 5:
-      position = 65;
-      break;
-    case 6:
-      position = 76;
-      break;
-    default:
-      break;
-    }
-    for (int j = 0; j < 3 * anzahl; j++) {
-      if (j % 2) {
-        for (int k = 0; k < 75; k++) {
-          switch (k) {
-          case 14:
-            break;
-          case 27:
-            break;
-          case 36:
-            break;
-          case 52:
-            break;
-          case 64:
-            break;
-          default:
-            mvprintw(2 + j, 5 + k, "-");
-          }
-        }
-      }
-      mvprintw(2 + j, 4 + position, "|");
-    }
-  }
+  // Warten auf eine Eingabe
+  getch();
+  menu();
 }
 
 // Function to determine the larger of two numbers
