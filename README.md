@@ -1,4 +1,4 @@
-quared
+# tic-tac-toe-quared
 
 Tic-Tac-Toe-Squared is a minimalistic tic-tac-toe game featuring an unbeatable bot for challenging gameplay.
 
